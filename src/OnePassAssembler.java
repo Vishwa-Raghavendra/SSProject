@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,61 +5,34 @@ import java.util.*;
 
 public class OnePassAssembler
 {
-    static class statements
+
+    static class references
     {
         String key;
         String miniObj;
         int Add;
         String stAdd;
 
-        public statements(String key, String miniObj, int add, String stAdd) {
+        references(String key, String miniObj, int add, String stAdd)
+        {
             this.key = key;
             this.miniObj = miniObj;
             Add = add;
             this.stAdd = stAdd;
-        }
-
-        public String getStAdd() {
-            return stAdd;
-        }
-
-        public void setStAdd(String stAdd) {
-            this.stAdd = stAdd;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getMiniObj() {
-            return miniObj;
-        }
-
-        public void setMiniObj(String miniObj) {
-            this.miniObj = miniObj;
-        }
-
-        public int getAdd() {
-            return Add;
-        }
-
-        public void setAdd(int add) {
-            Add = add;
         }
     }
-    static  Map<String,String> opcodes = new HashMap<>();
-    static Map<String,String> numsToBinary = new HashMap<>();
-    static Map<String,String> objectCodes = new HashMap<>();
-    static List<statements> fileStatemnts = new ArrayList<>();
-    static Map<String,String> SymTab = new HashMap<>();
-    static Map<String,String> binaryToNums = new HashMap<>();
 
 
-    static  void numsToBin()
+    private static  Map<String,String> opcodes = new HashMap<>();
+    private static Map<String,String> objectCodes = new HashMap<>();
+    private static Map<String,String> SymTab = new HashMap<>();
+
+    private static Map<String,String> numsToBinary = new HashMap<>();
+    private static Map<String,String> binaryToNums = new HashMap<>();
+
+    private static List<references> forwardReferences = new ArrayList<>();
+
+    private static void initializeMaps()
     {
         binaryToNums.put("0000","0");
         binaryToNums.put("0001","1");
@@ -73,9 +44,14 @@ public class OnePassAssembler
         binaryToNums.put("0111","7");
         binaryToNums.put("1000","8");
         binaryToNums.put("1001","9");
-    }
-    static void initializeMap()
-    {
+        binaryToNums.put("1010","A");
+        binaryToNums.put("1011","B");
+        binaryToNums.put("1100","C");
+        binaryToNums.put("1101","D");
+        binaryToNums.put("1110","E");
+        binaryToNums.put("1111","F");
+
+
         numsToBinary.put("0","0000");
         numsToBinary.put("1","0001");
         numsToBinary.put("2","0010");
@@ -86,40 +62,48 @@ public class OnePassAssembler
         numsToBinary.put("7","0111");
         numsToBinary.put("8","1000");
         numsToBinary.put("9","1001");
+        numsToBinary.put("A","1010");
+        numsToBinary.put("B","1011");
+        numsToBinary.put("C","1100");
+        numsToBinary.put("D","1101");
+        numsToBinary.put("E","1110");
+        numsToBinary.put("F","1111");
     }
+
+
     public static void main(String[] args) throws Exception
     {
+        initializeMaps();
 
-        initializeMap();
-        numsToBin();
-
-        File file = new File("D:\\InputProgam.txt");
+        File inputProgramFile = new File("D:\\InputProgam.txt");
         File opcodeFile  = new File("D:\\opcode.txt");
 
-        BufferedReader ops = new BufferedReader(new FileReader(opcodeFile));
 
-        String line;
-        while ((line=ops.readLine())!=null)
+        //Read Opcodes from the files
+        BufferedReader reader = new BufferedReader(new FileReader(opcodeFile));
+        String opcodeLine;
+        while ((opcodeLine=reader.readLine())!=null)
         {
-            StringTokenizer stringTokenizer = new StringTokenizer(line);
+            StringTokenizer stringTokenizer = new StringTokenizer(opcodeLine);
             opcodes.put(stringTokenizer.nextToken(),stringTokenizer.nextToken());
         }
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        String st;
 
-        Integer  nextAdd = 0;
-        Integer startAddress =0;
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(inputProgramFile));
+        String inputProgramLine;
+
+        int  nextAdd = 0,startAddress =0;
         String headerRecord = "";
 
         System.out.println("OnePass Assembler");
-        System.out.println("File Contains and Addresses");
+        System.out.println("File Contents and Addresses");
         System.out.println("==========================================================================\n\n");
-        while ((st=bufferedReader.readLine())!=null)
+
+        while ((inputProgramLine=bufferedReader.readLine())!=null)
         {
 
-
-            StringTokenizer stringTokenizer = new StringTokenizer(st);
+            StringTokenizer stringTokenizer = new StringTokenizer(inputProgramLine);
 
             int length = stringTokenizer.countTokens();
             String label="",opcode="",operand="";
@@ -142,8 +126,12 @@ public class OnePassAssembler
             {
                 headerRecord = "H^"+label+"^"+operand+"^";
                 nextAdd = Integer.parseInt(operand,16);
-                startAddress = Integer.parseInt(operand,16);
-                System.out.println(Integer.toHexString(nextAdd)+": "+st);
+                startAddress = nextAdd;
+                System.out.println(Integer.toHexString(nextAdd)+": "+inputProgramLine);
+            }
+            else if(opcode.equals("END"))
+            {
+                System.out.println(Integer.toHexString(nextAdd)+":\t\t"+opcode+"\t\t"+operand);
             }
             else
             {
@@ -151,9 +139,7 @@ public class OnePassAssembler
                 {
                     String opnum = opcodes.get(opcode);
 
-                    String ObjectCode  = "";
-
-                    ObjectCode = numsToBinary.get(opnum.toCharArray()[0]+"")+ numsToBinary.get(opnum.toCharArray()[1]+"");
+                    String ObjectCode = numsToBinary.get(opnum.toCharArray()[0]+"")+ numsToBinary.get(opnum.toCharArray()[1]+"");
                     //System.out.println(ObjectCode);
 
                     ObjectCode += "110010";
@@ -170,7 +156,7 @@ public class OnePassAssembler
 
                     if(!SymTab.containsKey(operand)||SymTab.get(operand).equals("UnKnown"))
                     {SymTab.put(operand,"UnKnown");
-                        fileStatemnts.add(new statements(operand,miniObj,nextAdd,nextAdd-3+""));
+                        forwardReferences.add(new references(operand,miniObj,nextAdd,nextAdd-3+""));
                         objectCodes.put(nextAdd-3+"",miniObj);
                     }
                     else
@@ -195,7 +181,7 @@ public class OnePassAssembler
                         else if ((opcode.equals("WORD")))
                             nextAdd+=3;
 
-                        for (statements e:fileStatemnts)
+                        for (references e: forwardReferences)
                         {
                             if(e.key.equals(label))
                             {
@@ -219,9 +205,8 @@ public class OnePassAssembler
                         SymTab.put(label,nextAdd+"");
 
                         String opnum = opcodes.get(opcode);
-                        String ObjectCode  = "";
 
-                        ObjectCode = numsToBinary.get(opnum.toCharArray()[0]+"")+ numsToBinary.get(opnum.toCharArray()[1]+"");
+                        String ObjectCode = numsToBinary.get(opnum.toCharArray()[0]+"")+ numsToBinary.get(opnum.toCharArray()[1]+"");
                         //System.out.println(ObjectCode);
 
                         ObjectCode += "110010";
@@ -236,12 +221,10 @@ public class OnePassAssembler
                         nextAdd = nextAdd + 3;
 
                         SymTab.put(operand,"UnKnown");
-                        fileStatemnts.add(new statements(operand,miniObj,nextAdd,nextAdd-3+""));
+                        forwardReferences.add(new references(operand,miniObj,nextAdd,nextAdd-3+""));
                         objectCodes.put(nextAdd-3+"",miniObj);
                     }
                 }
-
-
             }
         }
 
@@ -282,7 +265,7 @@ public class OnePassAssembler
 
             if(hh)
             {
-                int sizeDiff =0;
+                int sizeDiff;
                 if(i+5>add.size())
                     sizeDiff = Integer.parseInt(add.get(add.size()-1),16)-Integer.parseInt(add.get(i),16);
                 else
