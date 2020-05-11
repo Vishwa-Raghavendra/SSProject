@@ -8,6 +8,7 @@ public class Data
     static Map<String,String> numsToBinary = new HashMap<>();
     static Map<String,String> binaryToNums = new HashMap<>();
     static Set<String > format2 = new HashSet<>();
+    static Map<String,String> registers = new HashMap<>();
 
     static {
         binaryToNums.put("0000","0");
@@ -49,6 +50,10 @@ public class Data
         format2.add("CLEAR");
         format2.add("TIXR");
         format2.add("COMPR");
+
+        registers.put("X","1");
+        registers.put("A","0");
+        registers.put("S","4");
     }
 
     static int getFormat(String label)

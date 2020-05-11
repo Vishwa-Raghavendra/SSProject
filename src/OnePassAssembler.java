@@ -35,7 +35,7 @@ public class OnePassAssembler
     public static void main(String[] args) throws Exception
     {
 
-        File inputProgramFile = new File("D:\\InputProgam.txt");
+        File inputProgramFile = new File("D:\\InputProgam2.txt");
         File opcodeFile  = new File("D:\\opcode.txt");
 
 
@@ -157,14 +157,23 @@ public class OnePassAssembler
                     {
                         SymTab.put(label,nextAdd+"");
 
-                        String miniObj = getObjectCode(opcode,operand);
-
                         setAddress(nextAdd,nextAdd = nextAdd + Data.getFormat(opcode));
-                        //nextAdd = nextAdd + 3;
 
-                        SymTab.put(operand,"UnKnown");
-                        forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
-                        objectCodes.put(previousAddress+"",miniObj);
+                        if(!(Data.getFormat(opcode)==3))
+                        {
+                            if(Data.getFormat(opcode)==2)
+                            {
+                                objectCodes.put(previousAddress+"",opcodes.get(opcode)+Data.registers.get(operand)+"0");
+                            }
+                        }
+                        else
+                        {
+                            String miniObj = getObjectCode(opcode,operand);
+                            SymTab.put(operand,"UnKnown");
+                            forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
+                            objectCodes.put(previousAddress+"",miniObj);
+                        }
+
                     }
                 }
             }
@@ -217,7 +226,7 @@ public class OnePassAssembler
                 hh=false;
             }
 
-            System.out.print("^"+add.get(i));
+            System.out.print("^"+objectCodes.get(Integer.parseInt(add.get(i),16)+""));
         }
         System.out.print("\nE^"+add.get(0));
         System.out.print("\n==========================================================================\n\n");
@@ -225,6 +234,7 @@ public class OnePassAssembler
 
     private static String getObjectCode(String opcode,String operand)
     {
+        String opcodeOriginal = opcode;
         if(opcode.contains("+"))
            opcode=  opcode.replace("+","");
 
@@ -233,7 +243,7 @@ public class OnePassAssembler
         String ObjectCode = Data.numsToBinary.get(opnum.toCharArray()[0]+"")+ Data.numsToBinary.get(opnum.toCharArray()[1]+"");
 
 
-        ObjectCode += getNIXBPE(opcode,operand);
+        ObjectCode += getNIXBPE(opcodeOriginal,operand);
 
         ObjectCode = ObjectCode.substring(0,6)+ObjectCode.substring(8);
 
