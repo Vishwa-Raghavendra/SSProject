@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="456894b8-dcd9-45e5-881b-3d501b5fc61c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SSProjects/OnePassAssembler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SSProjects/OnePassAssembler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OnePassAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OnePassAssembler.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -22,11 +21,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OnePassAssembler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="134">
+              <caret line="93" selection-start-line="93" selection-end-line="93" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="class#references#0;class#OnePassAssembler#0" />
               </folding>
             </state>
           </provider>
@@ -35,11 +33,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Data.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="516">
+              <caret line="59" column="12" lean-forward="true" selection-start-line="59" selection-start-column="12" selection-end-line="59" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="initializer##0;class#Data#0" />
               </folding>
             </state>
           </provider>
@@ -57,6 +54,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>binaryToNums</find>
+      <find>nextAdd = nextAdd</find>
+      <find>nextAdd</find>
+      <find>getObjectCode</find>
+      <find>Data.getFormat</find>
     </findStrings>
     <replaceStrings>
       <replace>Data.binaryToNums</replace>
@@ -79,7 +80,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="-6" />
     <option name="y" value="7" />
     <option name="width" value="1381" />
@@ -91,6 +92,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -107,8 +110,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -163,16 +164,18 @@
       <workItem from="1586683474351" duration="9000" />
       <workItem from="1588515358770" duration="1307000" />
       <workItem from="1588588500398" duration="23000" />
+      <workItem from="1589202321507" duration="5927000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6308000" />
+    <option name="totallyTimeSpent" value="12235000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="7" width="1381" height="781" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2690854" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2728647" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -180,7 +183,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32872504" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.47004607" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39938557" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -207,25 +210,45 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/OnePassAssembler.java</url>
+          <line>63</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/OnePassAssembler.java">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitattributes">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#references#0;class#OnePassAssembler#0" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Data.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="516">
+          <caret line="59" column="12" lean-forward="true" selection-start-line="59" selection-start-column="12" selection-end-line="59" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="initializer##0;class#Data#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OnePassAssembler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

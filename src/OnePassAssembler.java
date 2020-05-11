@@ -10,15 +10,15 @@ public class OnePassAssembler
     {
         String key;
         String miniObj;
-        int Add;
-        String stAdd;
+        int nextAddress;
+        String currentAddress;
 
-        references(String key, String miniObj, int add, String stAdd)
+        references(String key, String miniObj, int nextAddress, String currentAddress)
         {
             this.key = key;
             this.miniObj = miniObj;
-            Add = add;
-            this.stAdd = stAdd;
+            this.nextAddress = nextAddress;
+            this.currentAddress = currentAddress;
         }
     }
 
@@ -27,6 +27,9 @@ public class OnePassAssembler
     private static Map<String,String> objectCodes = new HashMap<>();
     private static Map<String,String> SymTab = new HashMap<>();
     private static List<references> forwardReferences = new ArrayList<>();
+
+    static int nextAdd = 0;
+    static int previousAddress =0;
 
 
     public static void main(String[] args) throws Exception
@@ -50,7 +53,8 @@ public class OnePassAssembler
         BufferedReader bufferedReader = new BufferedReader(new FileReader(inputProgramFile));
         String inputProgramLine;
 
-        int  nextAdd = 0,startAddress =0;
+        int startAddress =0;
+
         String headerRecord = "";
 
         System.out.println("OnePass Assembler");
@@ -94,34 +98,24 @@ public class OnePassAssembler
             {
                 if(label.equals(" "))
                 {
-                    String opnum = opcodes.get(opcode);
-
-                    String ObjectCode = Data.numsToBinary.get(opnum.toCharArray()[0]+"")+ Data.numsToBinary.get(opnum.toCharArray()[1]+"");
-                    //System.out.println(ObjectCode);
-
-                    ObjectCode += "110010";
-
-                    ObjectCode = ObjectCode.substring(0,6)+ObjectCode.substring(8);
-
-                    String miniObj = Data.binaryToNums.get(ObjectCode.substring(0,4))+Data.binaryToNums.get(ObjectCode.substring(4,8))+Data.binaryToNums.get(ObjectCode.substring(8));
-                    //System.out.println(miniObj);
-
+                    String miniObj = getObjectCode(opcode,operand);
                     System.out.println(Integer.toHexString(nextAdd)+":\t\t"+opcode+"\t\t"+operand);
-                    //allAddress.add(Integer.toHexString(nextAdd));
 
-                    nextAdd = nextAdd + 3;
+
+                    setAddress(nextAdd,nextAdd + Data.getFormat(opcode));
+                    //nextAdd = nextAdd + 3;
 
                     if(!SymTab.containsKey(operand)||SymTab.get(operand).equals("UnKnown"))
-                    {SymTab.put(operand,"UnKnown");
-                        forwardReferences.add(new references(operand,miniObj,nextAdd,nextAdd-3+""));
-                        objectCodes.put(nextAdd-3+"",miniObj);
+                    {
+                        SymTab.put(operand,"UnKnown");
+                        forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
+                        objectCodes.put(previousAddress+"",miniObj);
                     }
                     else
                     {
                         int add =  Integer.parseInt(SymTab.get(operand));
                         String hex = Integer.toHexString(add-nextAdd);
-                        objectCodes.put(nextAdd-3+"",miniObj+hex.substring(hex.length()-3));
-                        //System.out.println(miniObj+hex.substring(hex.length()-3));
+                        objectCodes.put(previousAddress+"",miniObj+hex.substring(hex.length()-3));
                     }
                 }
                 else
@@ -134,15 +128,17 @@ public class OnePassAssembler
                             SymTab.put(label,nextAdd+"");
 
                         if(opcode.equals("RESW"))
-                            nextAdd+= Integer.parseInt(operand)*3;
+                            setAddress(nextAdd,nextAdd+= Integer.parseInt(operand)*3);
+                           // nextAdd+= Integer.parseInt(operand)*3;
                         else if ((opcode.equals("WORD")))
-                            nextAdd+=3;
+                            setAddress(nextAdd,nextAdd+=3);
+                            //nextAdd+=3;
 
                         for (references e: forwardReferences)
                         {
                             if(e.key.equals(label))
                             {
-                                int add =  Integer.parseInt(SymTab.get(label))-e.Add;
+                                int add =  Integer.parseInt(SymTab.get(label))-e.nextAddress;
                                 String adds = add+"";
 
                                 if(adds.length()==1)
@@ -150,8 +146,8 @@ public class OnePassAssembler
                                 else if(adds.length()==2)
                                     adds="0"+add;
 
-                                //opcodes.put(e.stAdd,e.miniObj+adds);
-                                objectCodes.put(e.stAdd,e.miniObj+adds);
+                                //opcodes.put(e.currentAddress,e.miniObj+adds);
+                                objectCodes.put(e.currentAddress,e.miniObj+adds);
                                 //System.out.println(e.miniObj+adds);
 
                             }
@@ -161,31 +157,20 @@ public class OnePassAssembler
                     {
                         SymTab.put(label,nextAdd+"");
 
-                        String opnum = opcodes.get(opcode);
+                        String miniObj = getObjectCode(opcode,operand);
 
-                        String ObjectCode = Data.numsToBinary.get(opnum.toCharArray()[0]+"")+ Data.numsToBinary.get(opnum.toCharArray()[1]+"");
-                        //System.out.println(ObjectCode);
-
-                        ObjectCode += "110010";
-
-                        ObjectCode = ObjectCode.substring(0,6)+ObjectCode.substring(8);
-
-                        String miniObj = Data.binaryToNums.get(ObjectCode.substring(0,4))+Data.binaryToNums.get(ObjectCode.substring(4,8))+Data.binaryToNums.get(ObjectCode.substring(8));
-                        //System.out.println(miniObj);
-
-                        //System.out.println(nextAdd+":\t\t"+opcode+"\t\t"+operand);
-
-                        nextAdd = nextAdd + 3;
+                        setAddress(nextAdd,nextAdd = nextAdd + Data.getFormat(opcode));
+                        //nextAdd = nextAdd + 3;
 
                         SymTab.put(operand,"UnKnown");
-                        forwardReferences.add(new references(operand,miniObj,nextAdd,nextAdd-3+""));
-                        objectCodes.put(nextAdd-3+"",miniObj);
+                        forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
+                        objectCodes.put(previousAddress+"",miniObj);
                     }
                 }
             }
         }
 
-        int size = (nextAdd-3)-startAddress;
+        int size = previousAddress-startAddress;
 
         headerRecord+=Integer.toHexString(size);
 
@@ -236,5 +221,45 @@ public class OnePassAssembler
         }
         System.out.print("\nE^"+add.get(0));
         System.out.print("\n==========================================================================\n\n");
+    }
+
+    private static String getObjectCode(String opcode,String operand)
+    {
+        if(opcode.contains("+"))
+           opcode=  opcode.replace("+","");
+
+        String opnum = opcodes.get(opcode);
+
+        String ObjectCode = Data.numsToBinary.get(opnum.toCharArray()[0]+"")+ Data.numsToBinary.get(opnum.toCharArray()[1]+"");
+
+
+        ObjectCode += getNIXBPE(opcode,operand);
+
+        ObjectCode = ObjectCode.substring(0,6)+ObjectCode.substring(8);
+
+        String miniObj = Data.binaryToNums.get(ObjectCode.substring(0,4))+Data.binaryToNums.get(ObjectCode.substring(4,8))+Data.binaryToNums.get(ObjectCode.substring(8));
+
+        return miniObj;
+    }
+
+    static void setAddress(int oldValue,int newValue)
+    {
+        previousAddress = oldValue;
+        nextAdd = newValue;
+    }
+
+     private static String getNIXBPE(String opcode,String operand)
+    {
+        String n ="1",i="1",x="0",b="0",p="1",e="0";
+
+        if(Data.getFormat(opcode)==4)
+            e="1";
+
+        if(operand.contains("#"))
+            n="0";
+        else if(operand.contains("@"))
+            i="0";
+
+        return n+i+x+b+p+e;
     }
 }

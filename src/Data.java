@@ -1,10 +1,13 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Data
 {
     static Map<String,String> numsToBinary = new HashMap<>();
     static Map<String,String> binaryToNums = new HashMap<>();
+    static Set<String > format2 = new HashSet<>();
 
     static {
         binaryToNums.put("0000","0");
@@ -41,5 +44,20 @@ public class Data
         numsToBinary.put("D","1101");
         numsToBinary.put("E","1110");
         numsToBinary.put("F","1111");
+
+
+        format2.add("CLEAR");
+        format2.add("TIXR");
+        format2.add("COMPR");
+    }
+
+    static int getFormat(String label)
+    {
+        if(label.contains("+"))
+            return 4;
+        else if(format2.contains(label))
+            return 2;
+        else
+            return 3;
     }
 }
