@@ -35,7 +35,7 @@ public class OnePassAssembler
     public static void main(String[] args) throws Exception
     {
 
-        File inputProgramFile = new File("D:\\InputProgam2.txt");
+        File inputProgramFile = new File("D:\\InputProgam.txt");
         File opcodeFile  = new File("D:\\opcode.txt");
 
 
@@ -101,15 +101,11 @@ public class OnePassAssembler
                     String miniObj = getObjectCode(opcode,operand);
                     System.out.println(Integer.toHexString(nextAdd)+":\t\t"+opcode+"\t\t"+operand);
 
-
                     setAddress(nextAdd,nextAdd + Data.getFormat(opcode));
-                    //nextAdd = nextAdd + 3;
 
                     if(!SymTab.containsKey(operand)||SymTab.get(operand).equals("UnKnown"))
                     {
-                        SymTab.put(operand,"UnKnown");
-                        forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
-                        objectCodes.put(previousAddress+"",miniObj);
+                        getDisplacement(opcode,operand);
                     }
                     else
                     {
@@ -124,15 +120,25 @@ public class OnePassAssembler
 
                     if(SymTab.containsKey(label))
                     {
-                        if(SymTab.get(label).length()==7)
+                        if(SymTab.get(label).equals("UnKnown"))
                             SymTab.put(label,nextAdd+"");
 
-                        if(opcode.equals("RESW"))
-                            setAddress(nextAdd,nextAdd+= Integer.parseInt(operand)*3);
-                           // nextAdd+= Integer.parseInt(operand)*3;
-                        else if ((opcode.equals("WORD")))
-                            setAddress(nextAdd,nextAdd+=3);
-                            //nextAdd+=3;
+                        switch (opcode)
+                        {
+                            case "RESW":
+                                setAddress(nextAdd, nextAdd += Integer.parseInt(operand) * 3);
+                                break;
+                            case "WORD":
+                                setAddress(nextAdd, nextAdd += 3);
+                                break;
+                            case "RESB":
+                                setAddress(nextAdd, nextAdd += Integer.parseInt(operand));
+                                break;
+                            case "BYTE":
+                                setAddress(nextAdd, nextAdd += 1);
+                                break;
+                        }
+
 
                         for (references e: forwardReferences)
                         {
@@ -146,9 +152,7 @@ public class OnePassAssembler
                                 else if(adds.length()==2)
                                     adds="0"+add;
 
-                                //opcodes.put(e.currentAddress,e.miniObj+adds);
                                 objectCodes.put(e.currentAddress,e.miniObj+adds);
-                                //System.out.println(e.miniObj+adds);
 
                             }
                         }
@@ -156,30 +160,14 @@ public class OnePassAssembler
                     else
                     {
                         SymTab.put(label,nextAdd+"");
-
                         setAddress(nextAdd,nextAdd = nextAdd + Data.getFormat(opcode));
-
-                        if(!(Data.getFormat(opcode)==3))
-                        {
-                            if(Data.getFormat(opcode)==2)
-                            {
-                                objectCodes.put(previousAddress+"",opcodes.get(opcode)+Data.registers.get(operand)+"0");
-                            }
-                        }
-                        else
-                        {
-                            String miniObj = getObjectCode(opcode,operand);
-                            SymTab.put(operand,"UnKnown");
-                            forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
-                            objectCodes.put(previousAddress+"",miniObj);
-                        }
-
+                        getDisplacement(opcode,operand);
                     }
                 }
             }
         }
 
-        int size = previousAddress-startAddress;
+        int size = nextAdd-startAddress;
 
         headerRecord+=Integer.toHexString(size);
 
@@ -228,7 +216,7 @@ public class OnePassAssembler
 
             System.out.print("^"+objectCodes.get(Integer.parseInt(add.get(i),16)+""));
         }
-        System.out.print("\nE^"+add.get(0));
+        System.out.print("\nE^"+Integer.toHexString(nextAdd));
         System.out.print("\n==========================================================================\n\n");
     }
 
@@ -236,7 +224,7 @@ public class OnePassAssembler
     {
         String opcodeOriginal = opcode;
         if(opcode.contains("+"))
-           opcode=  opcode.replace("+","");
+            opcode=  opcode.replace("+","");
 
         String opnum = opcodes.get(opcode);
 
@@ -252,13 +240,13 @@ public class OnePassAssembler
         return miniObj;
     }
 
-    static void setAddress(int oldValue,int newValue)
+    private static void setAddress(int oldValue,int newValue)
     {
         previousAddress = oldValue;
         nextAdd = newValue;
     }
 
-     private static String getNIXBPE(String opcode,String operand)
+    private static String getNIXBPE(String opcode,String operand)
     {
         String n ="1",i="1",x="0",b="0",p="1",e="0";
 
@@ -271,5 +259,20 @@ public class OnePassAssembler
             i="0";
 
         return n+i+x+b+p+e;
+    }
+
+    private static void getDisplacement(String opcode,String operand)
+    {
+        if(Data.getFormat(opcode)==2)
+        {
+            objectCodes.put(previousAddress+"",opcodes.get(opcode)+Data.registers.get(operand)+"0");
+        }
+        else
+        {
+            String miniObj = getObjectCode(opcode,operand);
+            SymTab.put(operand,"UnKnown");
+            forwardReferences.add(new references(operand,miniObj,nextAdd,previousAddress+""));
+            objectCodes.put(previousAddress+"",miniObj);
+        }
     }
 }

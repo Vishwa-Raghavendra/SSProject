@@ -10,7 +10,8 @@ public class Data
     static Set<String > format2 = new HashSet<>();
     static Map<String,String> registers = new HashMap<>();
 
-    static {
+    static
+    {
         binaryToNums.put("0000","0");
         binaryToNums.put("0001","1");
         binaryToNums.put("0010","2");

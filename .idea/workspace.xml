@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="456894b8-dcd9-45e5-881b-3d501b5fc61c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OnePassAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OnePassAssembler.java" afterDir="false" />
@@ -22,11 +21,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OnePassAssembler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="170" selection-start-line="170" selection-end-line="170" />
+            <state relative-caret-position="230">
+              <caret line="218" column="59" selection-start-line="218" selection-start-column="59" selection-end-line="218" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4773#5924#1" />
+                <element signature="class#references#0;class#OnePassAssembler#0" />
+                <element signature="method#getObjectCode#0;class#OnePassAssembler#0" />
+                <element signature="method#setAddress#0;class#OnePassAssembler#0" />
+                <element signature="method#getNIXBPE#0;class#OnePassAssembler#0" />
+                <element signature="method#getDisplacement#0;class#OnePassAssembler#0" />
               </folding>
             </state>
           </provider>
@@ -35,8 +38,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Data.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="63" selection-start-line="63" selection-end-line="63" />
+            <state relative-caret-position="451">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -60,6 +63,7 @@
       <find>nextAdd</find>
       <find>getObjectCode</find>
       <find>Data.getFormat</find>
+      <find>unknown</find>
     </findStrings>
     <replaceStrings>
       <replace>Data.binaryToNums</replace>
@@ -82,9 +86,9 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-6" />
-    <option name="y" value="7" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-35" />
+    <option name="y" value="-24" />
     <option name="width" value="1381" />
     <option name="height" value="781" />
   </component>
@@ -94,8 +98,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -112,6 +114,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -166,17 +170,19 @@
       <workItem from="1586683474351" duration="9000" />
       <workItem from="1588515358770" duration="1307000" />
       <workItem from="1588588500398" duration="23000" />
-      <workItem from="1589202321507" duration="10079000" />
+      <workItem from="1589202321507" duration="10313000" />
+      <workItem from="1589265070084" duration="5454000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16387000" />
+    <option name="totallyTimeSpent" value="22075000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="7" width="1381" height="781" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2728647" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27643505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -185,8 +191,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32872504" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.47004607" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39938557" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.95412844" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39908257" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -211,18 +217,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/OnePassAssembler.java</url>
-          <line>63</line>
-          <properties />
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
@@ -236,8 +230,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Data.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="451">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -246,11 +240,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OnePassAssembler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="170" selection-start-line="170" selection-end-line="170" />
+        <state relative-caret-position="230">
+          <caret line="218" column="59" selection-start-line="218" selection-start-column="59" selection-end-line="218" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4773#5924#1" />
+            <element signature="class#references#0;class#OnePassAssembler#0" />
+            <element signature="method#getObjectCode#0;class#OnePassAssembler#0" />
+            <element signature="method#setAddress#0;class#OnePassAssembler#0" />
+            <element signature="method#getNIXBPE#0;class#OnePassAssembler#0" />
+            <element signature="method#getDisplacement#0;class#OnePassAssembler#0" />
           </folding>
         </state>
       </provider>
